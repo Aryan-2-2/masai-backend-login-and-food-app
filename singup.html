@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sing Up</title>
+    <link rel="stylesheet" href="./style/all.css">
+</head>
+<body>
+  <div id="navbar"></div>
+    
+    <form action="">
+
+<input type="text" id="name" placeholder="Name">
+<input type="text" id="email" placeholder="Email">
+<input type="text" id="username" placeholder="User Name">
+
+<input type="text" id="password" placeholder="Password">
+<input type="number" name="" id="mobile" placeholder="Mobile No">
+<input type="text" name="" id="description" placeholder="Description">
+
+<button id="submit" >Submit</button>
+
+</form>
+</body>
+</html>
+
+<script type="module">
+
+
+import Navbar from "./components/navbar.js";
+
+document.querySelector("#navbar").innerHTML = Navbar()
+
+
+let register = async (e)=>{
+   e.preventDefault();
+
+    let form_data ={
+        name: document.querySelector("#name").value,
+        email: document.querySelector("#email").value,
+        password: document.querySelector("#password").value,
+        username: document.querySelector("#username").value,
+        mobile: document.querySelector("#mobile").value,
+        description: document.querySelector("#description").value,
+
+    }
+
+
+    form_data = JSON.stringify(form_data)
+    let res = await fetch("https://masai-api-mocker.herokuapp.com/auth/register",{
+     
+       method : 'POST',
+       body : form_data,
+     
+       
+       
+       headers:{
+           "Content-Type":"application/json",
+       },
+
+    })
+    let data =  await res.json()
+    console.log('data:', data)
+    
+
+}
+
+document.querySelector("#submit").addEventListener("click",register)
+</script>

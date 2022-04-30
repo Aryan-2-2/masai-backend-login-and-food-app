@@ -1,0 +1,10 @@
+#navbar{
+    display: flex;
+    border:  2px solid teal;
+    justify-content: space-between;
+}
+#options{
+    display: flex;
+    gap: 50px;
+}
+

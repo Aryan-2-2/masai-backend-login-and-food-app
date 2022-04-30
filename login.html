@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  <link rel="stylesheet" href="./style/all.css">
+</head>
+<body>
+<div id="navbar"></div>
+<div id="show"></div>
+  <div id="login">
+
+    <input type="text" id="username" placeholder="User Name">
+
+    <input type="text" id="password" placeholder="Password"> 
+<button id="submit">Login</button>  
+</div>
+</body>
+</html>
+
+<script type="module">
+
+import Navbar from "./components/navbar.js";
+
+document.querySelector("#navbar").innerHTML = Navbar()
+
+let login =  () => {
+    let user_dat = {
+      username: document.getElementById("username").value,
+      password: document.getElementById("password").value,
+    };
+
+   let user_data = JSON.stringify(user_dat);
+
+    fetch("https://masai-api-mocker.herokuapp.com/auth/login", {
+      method: "POST",
+     
+      body: user_data,
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+    
+    getUserDetail(user_dat.username, res.token);
+    // console.log(data);
+      console.log(res)
+    })
+
+  .catch(e => {
+    console.log(e)
+  })
+
+  window.location.href="index.html"
+  };
+
+  document.getElementById("submit").addEventListener("click", login);
+
+  let getUserDetail =  (username, token) => {
+     
+    fetch(
+      `https://masai-api-mocker.herokuapp.com/user/${username}`,
+      {
+       // mode : "no-cors",
+        headers: {
+          Authorization: `Bearer ${token}`,
+         
+
+        },
+      }
+    )
+
+    .then(res => res.json())
+    .then(res => {
+      console.log(res)
+      showing(res)
+      localStorage.setItem("data",JSON.stringify(res))
+    })
+
+  .catch(e => {
+    console.log(e)
+  })
+  };
+  //nnnjjjjjjnnnnjnjnjnjnjnjjjnjnj@gmail.com
+
+
+
+
+  let showing = (data)=>{
+
+    let  username = document.createElement("p")
+    let  email = document.createElement("p")
+    let  des = document.createElement("p")
+    let  mobile = document.createElement("p")
+
+    username.textContent = `User Name : ${data.username}`
+    email.textContent = `Email Id : ${data.email}`
+    mobile.textContent = `Mobile No : ${data.mobile}`
+    des.textContent = `User Description : ${data.description}`
+
+
+    document.querySelector("#show").append(username,email,mobile,des)
+
+  }
+</script>
